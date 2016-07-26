@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup as bs
 import datetime
+from config import Config
 
 
 
@@ -38,7 +39,9 @@ class SmallAd():
             link = "http://hardverapro.hu/"+i[0].find_all('a')[0]["href"]
             price = i[1].find_all("span",class_="price")[0].get_text()
             date = datetime.datetime.now()
-            ad_objects.append(SmallAd(title,link,price,date))
+            for term in Config.load("search_terms"):
+                if term in title.lower():
+                    ad_objects.append(SmallAd(title,link,price,date))
         return ad_objects
 
 
@@ -46,12 +49,12 @@ class SmallAd():
 
 #
 #
-my = HardverScraper("http://hardverapro.hu")
-x = my.transform()
-
-z = SmallAd.factory(x)
-for i in z:
-    print(i.title,i.link,i.price,i.date)
+# my = HardverScraper("http://hardverapro.hu")
+# x = my.transform()
+#
+# z = SmallAd.factory(x)
+# for i in z:
+#     print(i.title,i.link,i.price,i.date)
 
 
 # x = datetime.date.today()

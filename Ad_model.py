@@ -1,14 +1,16 @@
-import peewee
+from  peewee import *
+from connect import db
 
 class BaseModel(Model):
     class Meta:
         database = db
 
-class SmallAd(BaseModel):
-    title = Charfield()
-    url = Charfield()
+class MatchingAd(BaseModel):
+    title = CharField()
+    url = CharField()
     price = IntegerField()
     date = DateTimeField()
 
-    def existing_ads():
-        return SmallAd.select(title)
+
+    def is_existing(ad):
+        return len(MatchingAd.select().where(MatchingAd.title == ad)) != 0
